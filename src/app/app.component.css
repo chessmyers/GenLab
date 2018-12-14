@@ -1,0 +1,110 @@
+.sidebar {
+  height: 100%;
+  width: 250px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  background-color: blanchedalmond;
+  overflow-x: hidden;
+  padding: 20px;
+}
+
+.infoBar {
+  height: 360px;
+  width: 160px;
+  position: fixed;
+  z-index: 1;
+  bottom: 0;
+  right: 250px;
+  background-color: #ffd6cd;
+  padding: 5px;
+  border-top-left-radius: 10px;
+  border-color: black;
+}
+
+.infoText {
+  margin-top: auto;
+}
+
+.cell {
+  border-width:1px;
+  border-color: black;
+  width: 10px;
+  height: 10px;
+  background-color: green;
+}
+
+.s1 {
+  background-color: chartreuse;
+}
+
+.s2 {
+  background-color: indigo;
+  color: whitesmoke;
+}
+
+.s3 {
+  background-color: orange;
+}
+
+.s4 {
+  background-color: deeppink;
+}
+
+.showButton {
+  position: fixed;
+  z-index: 1;
+  bottom: 10px;
+  right: 420px;
+}
+
+.readMe {
+  width: 600px;
+  height: 500px;
+  position: fixed;
+  left: 30%;
+  top: 10%;
+  z-index: 3;
+  border-style: solid;
+  border-width: 3px;
+  border-color: black;
+  border-radius: 15px;
+  background-color: aliceblue;
+  overflow-x: hidden;
+}
+
+.helpButton {
+  position:fixed;
+  top: 5px;
+  right: 20px;
+}
+
+.closeButton {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+.helpCell {
+  border-style: solid;
+  border-width: 1px;
+  border-color: black;
+  width:20px;
+  height:20px;
+}
+
+.helpCellMain {
+  border-style: solid;
+  border-width: 1px;
+  border-color: black;
+  width:20px;
+  height:20px;
+  background-color: black;
+}
+
+.helpTable {
+  border-style:solid;
+  border-width: 1px;
+  border-color:black;
+}
