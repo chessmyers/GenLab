@@ -1,6 +1,5 @@
 <html>
   <head>
-    <title>EvoLab</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
   </head>
   <body>
@@ -33,53 +32,7 @@
     top middle, top right corner, right side, bottom right corner, bottom middle, bottom left corner, and left side) or just the cells in its four cardinal directions (above it,
     to the right, below it, and to the left).  The neighborhood type that interacts will all 8 cells around the player cell is a <b>Moore neighborhood</b>,
     while a <b>Von Neumann neighborhood</b> only includes four cells around the player cell.  Note that if you do not touch this, the program will default to using a Moore neighborhood.</p>
-  <p class="lead"> Here is a visualization:</p>
-  <table style="width:100%;">
-    <tr>
-      <td align="middle">
-  <label>Von Neumann</label>
-  <table>
-    <tr>
-      <td></td>
-      <td class="helpCell"></td>
-      <td></td>
-    </tr>
-    <tr>
-      <td class="helpCell"></td>
-      <td class="helpCellMain"> </td>
-      <td class="helpCell"></td>
-    </tr>
-    <tr>
-      <td></td>
-      <td class="helpCell"></td>
-      <td></td>
-    </tr>
-  </table>
-      </td>
-      <td align="middle">
-
-    <label>Moore</label>
-    <table>
-      <tr>
-        <td class="helpCell"></td>
-        <td class="helpCell"></td>
-        <td class="helpCell"></td>
-      </tr>
-      <tr>
-        <td class="helpCell"></td>
-        <td class="helpCellMain"> </td>
-        <td class="helpCell"></td>
-      </tr>
-      <tr>
-        <td class="helpCell"></td>
-        <td class="helpCell"></td>
-        <td class="helpCell"></td>
-      </tr>
-    </table>
-
-      </td>
-    </tr>
-  </table>
+ 
   <h4>Network Size</h4>
   <p class="lead">The network size determines the number of cells in the entire network.  For 1D networks this is the width, so this
     number is also the total number of cells in the network.  For 2D networks this is both the width and the height, so the total number of
@@ -121,62 +74,8 @@
     and as few as two.  Simply fill out the game you wish to model, and the program will figure out which strategies you are using and omit the rest.  For example, if you are modeling the classic Prisoner's Dilemma
     with the two strategies Cooperate and Defect and fill out the matrix as such, the program will know and generate a network with just those two.  If you fill out the matrix incompletely, the network may still generate but you
     will be unable to advance generations and will have to re-generate the network once it is fixed.</p>
-  <p class="lead">It should also be noted that the matrix should be filled just with <b>player 1's</b> payoffs, so each cell in the matrix should have just one number in it.  For example, if given the game</p>
-  <table>
-    <tr>
-      <td class="helpTable"></td>
-      <td class="helpTable">Cooperate</td>
-      <td class="helpTable">Defect</td>
-    </tr>
-    <tr>
-      <td class="helpTable">Cooperate</td>
-      <td class="helpTable">2,2</td>
-      <td class="helpTable">0,3</td>
-    </tr>
-    <tr>
-      <td class="helpTable">Defect</td>
-      <td class="helpTable">3,0</td>
-      <td class="helpTable">1,1</td>
-    </tr>
-  </table>
-  <p class="lead">The (4x4) payoff matrix should look like this: </p>
-  <table>
-    <tr>
-      <td class="helpTable"></td>
-      <td class="helpTable">S1</td>
-      <td class="helpTable">S2</td>
-      <td class="helpTable">S3</td>
-      <td class="helpTable">S4</td>
-    </tr>
-    <tr>
-      <td class="helpTable">S1</td>
-      <td class="helpTable">2</td>
-      <td class="helpTable">0</td>
-      <td class="helpTable"></td>
-      <td class="helpTable"></td>
-    </tr>
-    <tr>
-      <td class="helpTable">S2</td>
-      <td class="helpTable">3</td>
-      <td class="helpTable">1</td>
-      <td class="helpTable"></td>
-      <td class="helpTable"></td>
-    </tr>
-    <tr>
-      <td class="helpTable">S3</td>
-      <td class="helpTable"></td>
-      <td class="helpTable"></td>
-      <td class="helpTable"></td>
-      <td class="helpTable"></td>
-    </tr>
-    <tr>
-      <td class="helpTable">S4</td>
-      <td class="helpTable"></td>
-      <td class="helpTable"></td>
-      <td class="helpTable"></td>
-      <td class="helpTable"></td>
-    </tr>
-  </table>
+  <p class="lead">It should also be noted that the matrix should be filled just with <b>player 1's</b> payoffs, so each cell in the matrix should have just one number in it.</p>
+  
   <p class="lead">Also note that this is the only option that <b>cannot</b> be left blank, so be sure to fill this out before generating the network.</p>
   <h4>Strategy Percentages</h4>
   <p class="lead">The boxes represent the preferred percentage of each strategy that will be created during initial generation.  Be sure to only fill out boxes for strategies that are used
