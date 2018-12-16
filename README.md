@@ -3,6 +3,8 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
   </head>
   <body>
+    <h3>Try it out at <a href="https://chessmyers.github.io/GenLab/">https://chessmyers.github.io/GenLab/</a></h3>
+    
 <h1 class="display-4 text-center">GenLab Help</h1>
   <p class="lead text-center">Welcome to GenLab!</p>
   <p class="lead text-center">This program can be used to visualize game-theoretical models such as the Prisoner's Dilemma,
