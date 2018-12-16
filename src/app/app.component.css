@@ -21,6 +21,7 @@
   padding: 5px;
   border-top-left-radius: 10px;
   border-color: black;
+  overflow-x: hidden;
 }
 
 .infoText {
@@ -41,7 +42,7 @@
 
 .s2 {
   background-color: indigo;
-  color: whitesmoke;
+  color: yellow;
 }
 
 .s3 {
@@ -52,11 +53,67 @@
   background-color: deeppink;
 }
 
+.s5 {
+  background-color: aqua;
+}
+
+.s6 {
+  background-color: yellow;
+}
+.s7 {
+  background-color: sienna;
+}
+
+.s8 {
+  background-color: blue;
+  color: orange
+}
+
+.s9 {
+  background-color: darkred;
+}
+
+.s10 {
+  background-color: olive;
+}
+
+.s11 {
+  background-color: moccasin;
+}
+
+.s12 {
+  background-color: teal;
+}
+
+.s13 {
+  background-color: royalblue;
+}
+
+.s14 {
+  background-color: dimgrey;
+}
+
+.s15 {
+  background-color: peru;
+}
+
+.s16 {
+  background-color: plum;
+}
+
+
 .showButton {
   position: fixed;
   z-index: 1;
   bottom: 10px;
   right: 420px;
+}
+
+.hiddenNextGen {
+  position: fixed;
+  z-index: 0;
+  bottom: 10px;
+  right: 250px;
 }
 
 .readMe {
@@ -65,7 +122,7 @@
   position: fixed;
   left: 30%;
   top: 10%;
-  z-index: 3;
+  z-index: 6;
   border-style: solid;
   border-width: 3px;
   border-color: black;
@@ -107,4 +164,40 @@
   border-style:solid;
   border-width: 1px;
   border-color:black;
+}
+
+.matrixPanel {
+  width: 850px;
+  height: 710px;
+  position: fixed;
+  right: 250px;
+  bottom: 0px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: black;
+  border-radius: 10px;
+  z-index: 5;
+  background-color: aliceblue;
+  overflow-x: hidden;
+}
+
+.percentagesPanel {
+  width: 150px;
+  height:710px;
+  position: fixed;
+  right: 1100px;
+  bottom: 0px;
+  border-style: solid;
+  border-color:black;
+  border-width: 1px;
+  border-radius: 10px;
+  z-index: 5;
+  background-color: bisque;
+  overflow-x: hidden;
+}
+
+.closeMatrix {
+  position: absolute;
+  top: 10px;
+  right: 10px;
 }

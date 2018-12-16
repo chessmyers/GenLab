@@ -46,9 +46,10 @@
     </div>
     <div class="form-group">
       <label for="cellSize">Cell Size</label>
-      <br><i>Default: 10 (measured in px)</i>
+      <br><i>Default: 10 (pixels)</i>
       <input type="text" class="form-control" id="cellSize" name="cellSize" ngModel required>
     </div>
+    <button type="button" class="btn btn-sm btn-info" (click)="reDrawGame()" [hidden]="matrixSize === 0 || is2D === false">Redraw Game</button>
     <div class="form-group">
       <label for="learnMethod">Learning Method:</label>
       <br><i>Default: Imitate-the-best</i>
@@ -58,19 +59,16 @@
         <option value="pi" name="pi">Probabilistic Imitation</option>
       </select>
     </div>
-    <label>Tie-breaking Rule: <br><i>Choose random strategy</i></label>
     <div class="form-group">
       <label for="matrixWidth">Matrix Size:</label>
       <br><i>Default: 4</i>
-      <select class="form-control" id="matrixWidth" name="matrixWidth" ngModel required>
+      <select class="form-control" id="matrixWidth" name="matrixWidth" ngModel required (change)="updateMatrixWidth()">
         <option value="4" name="4">4</option>
-        <option value="8" name="8">8</option>
-        <option value="12" name="12">12</option>
         <option value="16" name="16">16</option>
       </select>
     </div>
 
-
+  <div [hidden]="matrixWidth === 16">
     <div class="form-group">
       <label>Payoff Matrix</label>
       <table>
@@ -130,8 +128,14 @@
         </tr>
       </table>
     </div>
+  </div>
+    <div [hidden]="matrixWidth === 4">
+      <button class="btn btn-lg btn-success" type="button" (click)="showMatrixPanel = !showMatrixPanel">← Fill Out Matrix</button>
+    </div>
     <hr>
     <button type="submit" class="btn btn-primary">Generate Network!</button>
+    <!--<h6></h6>
+    <button type="reset" class="btn btn-danger btn-sm">Reset Options</button>-->
 
   </form>
   <br/>
@@ -142,28 +146,43 @@
 <div class="infoBar" [hidden]="!showSettings">
   <p class="lead text-center">Generation: {{ genNum }}</p>
   <hr>
-  <p class="lead text-center">S1: {{ s1count }}/{{ cellTotal }} - {{ s1countpercent }}%</p>
-  <p class="lead text-center">S2: {{ s2count }}/{{ cellTotal }} - {{ s2countpercent }}%</p>
-  <p class="lead text-center">S3: {{ s3count }}/{{ cellTotal }} - {{ s3countpercent }}%</p>
-  <p class="lead text-center">S4: {{ s4count }}/{{ cellTotal }} - {{ s4countpercent }}%</p>
+  <p class="lead text-center" [hidden]="matrixSize < 1">S1: {{ scount[1] }}/{{ cellTotal }} - {{ scountpercent[1] }}%</p>
+  <p class="lead text-center" [hidden]="matrixSize < 2">S2: {{ scount[2] }}/{{ cellTotal }} - {{ scountpercent[2] }}%</p>
+  <p class="lead text-center" [hidden]="matrixSize < 3">S3: {{ scount[3] }}/{{ cellTotal }} - {{ scountpercent[3] }}%</p>
+  <p class="lead text-center" [hidden]="matrixSize < 4">S4: {{ scount[4] }}/{{ cellTotal }} - {{ scountpercent[4] }}%</p>
+  <p class="lead text-center" [hidden]="matrixSize < 5">S5: {{ scount[5] }}/{{ cellTotal }} - {{ scountpercent[5] }}%</p>
+  <p class="lead text-center" [hidden]="matrixSize < 6">S6: {{ scount[6] }}/{{ cellTotal }} - {{ scountpercent[6] }}%</p>
+  <p class="lead text-center" [hidden]="matrixSize < 7">S7: {{ scount[7] }}/{{ cellTotal }} - {{ scountpercent[7] }}%</p>
+  <p class="lead text-center" [hidden]="matrixSize < 8">S8: {{ scount[8] }}/{{ cellTotal }} - {{ scountpercent[8] }}%</p>
+  <p class="lead text-center" [hidden]="matrixSize < 9">S9: {{ scount[9] }}/{{ cellTotal }} - {{ scountpercent[9] }}%</p>
+  <p class="lead text-center" [hidden]="matrixSize < 10">S10: {{ scount[10] }}/{{ cellTotal }} - {{ scountpercent[10] }}%</p>
+  <p class="lead text-center" [hidden]="matrixSize < 11">S11: {{ scount[11] }}/{{ cellTotal }} - {{ scountpercent[11] }}%</p>
+  <p class="lead text-center" [hidden]="matrixSize < 12">S12: {{ scount[12] }}/{{ cellTotal }} - {{ scountpercent[12] }}%</p>
+  <p class="lead text-center" [hidden]="matrixSize < 13">S13: {{ scount[13] }}/{{ cellTotal }} - {{ scountpercent[13] }}%</p>
+  <p class="lead text-center" [hidden]="matrixSize < 14">S14: {{ scount[14] }}/{{ cellTotal }} - {{ scountpercent[14] }}%</p>
+  <p class="lead text-center" [hidden]="matrixSize < 15">S15: {{ scount[15] }}/{{ cellTotal }} - {{ scountpercent[15] }}%</p>
+  <p class="lead text-center" [hidden]="matrixSize < 16">S16: {{ scount[16] }}/{{ cellTotal }} - {{ scountpercent[16] }}%</p>
 </div>
 
 <div class="showButton">
   <button type="button" class="btn btn-outline-info btn-sm" (click)="toggleShowSettings()">Show/Hide Options</button>
 </div>
+<div class="hiddenNextGen">
+  <button class="btn btn-outline-warning" (click)="nextGen()">Next Generation!</button>
+</div>
 
 <div class="readMe" *ngIf="showHelp">
   <button class="btn btn-danger closeButton" (click)="toggleShowHelp()">Close</button>
   <h1 class="display-4 text-center">GenLab Help</h1>
-  <p class="lead text-center">Thanks for using GenLab!</p>
-  <p class="lead text-center">This program can be used to visualize game-theoretical models such as the prisoner's dilemma,
-    hawk-dove game, and more.</p>
+  <p class="lead text-center">Welcome to GenLab!</p>
+  <p class="lead text-center">This program can be used to visualize game-theoretical models such as the Prisoner's Dilemma,
+    Hawk-Dove, and more.</p>
   <p class="lead text-center">To use, simply fill out desired options and click <b>Generate Network!</b> to create your
     network.  Once the network has been created, press the <b>Next Generation!</b> button to progress through the generations
     of this network as many times as you wish.  As you can see, many of the options have indicated default values that are used
     when a value is not provided for that element.  If you are happy with the default values, feel free to leave some options blank.
     The only option that <b>must</b> be filled out is the payoff matrix, or the program will not work. More information about each
-    option can be found below:</p>
+    option can be found below.</p>
   <h4>Network Type:</h4>
   <p class="lead">There are two options for the network type: 1D and 2D.  A 2D network will be a full lattice of cells which interact
     with those surrounding them, while a 1D network will be a single row of cells that only interact with those on the left and right
@@ -182,7 +201,7 @@
   <p class="lead">This option (which as mentioned only applies for 2D networks) indicates whether each cell will interact will all 8 cells surrounding it (top left corner,
     top middle, top right corner, right side, bottom right corner, bottom middle, bottom left corner, and left side) or just the cells in its four cardinal directions (above it,
     to the right, below it, and to the left).  The neighborhood type that interacts will all 8 cells around the player cell is a <b>Moore neighborhood</b>,
-    while <b>Von Neumann neighborhoods</b> only include four cells around the player cell.  Note that if you do not touch this the program will default to using Moore neighborhoods.</p>
+    while a <b>Von Neumann neighborhood</b> only includes four cells around the player cell.  Note that if you do not touch this, the program will default to using a Moore neighborhood.</p>
   <p class="lead"> Here is a visualization:</p>
   <table style="width:100%;">
     <tr>
@@ -235,16 +254,41 @@
     number is also the total number of cells in the network.  For 2D networks this is both the width and the height, so the total number of
     cells in the network is this number squared.  For example, if you put 50 here and generate a 2D network, that network will have 50^2 = 2,500 cells.
     Be careful when generating very large networks, as doing so may cause the program to slow down.  If you generate an extremely large network that is too slow in updating,
-    simply generate a smaller one and garbage collection will take care of the rest to speed the program up.  It should be noted that if you leave this field blank, the program
+    simply generate a smaller one and the old one will be discarded to speed the program up.  It should be noted that if you leave this field blank, the program
     will default to generating networks of size 20.</p>
   <h4>Cell Size</h4>
   <p class="lead">This option simply allows you to change the size of each cell in the graph (measured in pixels).  So if you put 5 here, each cell will be 5 pixels high and 5 pixels wide.
     This can be useful when generating very large networks that need a smaller cell size to fit on the screen, or very small networks that would be easier to see if each cell were a bit bigger.
-    Note that if this is left blank, the program will default to 10 pixels in size for each cell.</p>
+    For 2D networks, there will be a button <b>Redraw Game</b> (appears after network is generated) that allows you to update the cell size of the network without generating an entirely new game.
+    Note that if this field is left blank, the program will default to 10 pixels in size for each cell.</p>
+  <h4>Learning Method</h4>
+  <p class="lead">Changing the learning method allows you to alter how adjacent cells interact with one another and adapt.  There are three options: </p>
+  <h5>Imitate-the-best</h5>
+  <p class="lead">Imitate-the-best, as its name implies, is a learning method that has each cell imitating its most successful neighbor.  In each generation, every cell will play against its immediate neighbors
+    (which for 2D networks is influenced by the neighborhood type selected) and tally up the payoffs it receives.  After each cell has played against its neighbors, it will then compare itself against its neighbors
+    to see who fared the best.  If a cell received a higher payoff than all of its neighbors, it will keep strategy it has.  If a certain neighbor received a higher payoff than both the cell in question and all of its other neighbors,
+    the cell will adopt that neighbor's strategy.  If one or multiple neighbors and the cell in question received the same payoff, a strategy will be randomly chosen among those with the highest payoff.  </p>
+  <p class="lead">Note that if no learning method is chosen, this will be the default.</p>
+  <h5>Myopic Best Response</h5>
+  <p class="lead">Myopic best response is a nearsighted learning method that has cells figuring out, given their current neighbors, which strategy would net the highest payoff and then adopting that strategy in the next round.  This being the case,
+    the cell's current strategy is irrelevant for its learning as it is only concerned with which, among the available strategies, would fare best.  If a given cell has strategy S2 and it would have received the highest payoff among those available
+    if it were S3, that's what it will switch to.  If it is currently faring better than any other strategy would in its position, the cell will not change.</p>
+  <p class="lead">The reason this learning method is nearsighted is because every other cell in the network is going through the same process, so the strategy that would fair best in the given neighborhood is almost irrelevant because that neighborhood will completely change in the next generation.
+  However, unlike the other two learning methods, it allows for the emergence of strategies not even present on the board, let alone in the immediate neighborhood of the cell, and so can make for some very interesting models.</p>
+  <h5>Probabilistic Imitation</h5>
+  <p class="lead">Probabilistic Imitation is similar to <b>imitate-the-best</b> in that has cells looking to copy their successful neighbors; however, method does not guarantee that the neighbor with the highest payoff will be copied or even that a cell with a payoff higher than all neighbors will retain its strategy.
+    Rather, the strategies in the neighborhood will be copied with probability proportional to what percentage their payoffs are of the total of payoffs in the neighborhood.  Every cell in the network plays against its neighbors to generate a payoff just like in ITB.  After that, each will take the sum of all the payoffs in its neighborhood,
+    and randomly choose a strategy in the neighborhood based on the percentage that strategy's payoffs are of the total.  A cell may very well retain its original strategy through this method.</p>
+  <p class="lead">For example, let's say that the sum of all the strategies in a neighborhood is 50, cells with strategy S1 have generated a total payoff of 10, cells with strategy S2 have generated a total payoff of 25, and cells with other strategies have generated the other 15 utils.
+    This cell has a 20% chance of adopting strategy S1, a 50% chance of adopting S2, and a 30% chance of adopting one of the other strategies.  With this learning method, even strategies that are less successful than most others have a chance of surviving.</p>
+  <h4>Matrix Size</h4>
+  <p class="lead">GenLab can model up to sixteen different strategies; by default, inputs for just four will be shown since most will not need more than that.  To show the full 16x16 matrix, select <b>16</b> for <b>Matrix Size</b> and the original 4x4 one, as well as the strategy percentages options, will disappear to be replaced by a button that displays a new panel.
+    This panel will have boxes to set up to 16 strategies (256 total payoffs to input), as well as for setting initial generation percentages for each strategy.  The 16x16 matrix functions exactly like the 4x4 one (see below); while you can set all 16 strategies, feel free to use as few as 2 or anywhere in between.  Note that EVERY payoff must be filled out if a strategy is being used,
+    otherwise the program will not function correctly.</p>
   <h4>Payoff Matrix</h4>
-  <p class="lead">Perhaps the most important element of the program, this matrix allows you to set the payoffs for the games being modelled.  You can have up to four strategies in the game being modelled,
-    and as few as two.  Simply fill out the game you wish to model, and the program will figure out which strategies you are using and omit the rest.  For example, if you are modelling the classic prisoner's dilemma
-    with the two strategies cooperate and defect and fill out the matrix as such, the program will know and generate a matrix with just those two.  If you fill out the matrix incompletely, the network may still generate but you
+  <p class="lead">Perhaps the most important element of the program, this matrix allows you to set the payoffs for the games being modeled.  You can have up to sixteen strategies in the game being modeled,
+    and as few as two.  Simply fill out the game you wish to model, and the program will figure out which strategies you are using and omit the rest.  For example, if you are modeling the classic Prisoner's Dilemma
+    with the two strategies Cooperate and Defect and fill out the matrix as such, the program will know and generate a network with just those two.  If you fill out the matrix incompletely, the network may still generate but you
     will be unable to advance generations and will have to re-generate the network once it is fixed.</p>
   <p class="lead">It should also be noted that the matrix should be filled just with <b>player 1's</b> payoffs, so each cell in the matrix should have just one number in it.  For example, if given the game</p>
   <table>
@@ -264,7 +308,7 @@
       <td class="helpTable">1,1</td>
     </tr>
   </table>
-  <p class="lead">The payoff matrix should look like this: </p>
+  <p class="lead">The (4x4) payoff matrix should look like this: </p>
   <table>
     <tr>
       <td class="helpTable"></td>
@@ -305,8 +349,415 @@
   <p class="lead">Also note that this is the only option that <b>cannot</b> be left blank, so be sure to fill this out before generating the network.</p>
   <h4>Strategy Percentages</h4>
   <p class="lead">The boxes represent the preferred percentage of each strategy that will be created during initial generation.  Be sure to only fill out boxes for strategies that are used
-    (so if using S1, S2, and S3, leave S4 blank) and to have the given percentages add up to 100%.  For example, if you are using S1, S2, and S3, you might put 10 for S1, 50 for S2, 40 for S3,
-    and leave S4 blank.  This will generate a network that is comprised of approximately 10% S1, 50% S2, 40% S3, and no S4.</p>
+    (so if using S1, S2, S3, S4, S5, and S6, leave the rest blank) and to have the given percentages add up to 100%.  For example, if you are using S1, S2, and S3, you might put 10 for S1, 50 for S2, 40 for S3,
+    and leave the others blank.  This will generate a network that is comprised of approximately 10% S1, 50% S2, 40% S3, and nothing else.</p>
   <p class="lead">Alternatively, you can leave these boxes blank to generate equal percentages of each strategy used.  So, if using S1 and S2, the network will generate with 50% of each; if using S1,
-    S2, and S3, there will be about 33.3% of each; and if using all four strategies, there will be about 25% of each.  This may be easier if initial proportions do not matter.</p>
+    S2, and S3, there will be about 33.3% of each; if using four strategies, 25% of each; and so on and so forth.  This may be an easier option if initial strategy proportions do not matter.</p>
+  <br>
+  <h3 style="text-align: center">Happy Modeling!</h3>
+  <br><br>
+  <p class="lead text-center">Created by Christopher Myers
+    <br>Northeastern University '22
+    <br><a href="https://github.com/chessmyers">https://github.com/chessmyers</a></p>
+</div>
+
+<div class="matrixPanel" [hidden]="!showMatrixPanel">
+  <p class="lead text-center">Payoff Matrix</p>
+  <button class="closeMatrix btn btn-sm btn-danger" (click)="showMatrixPanel = !showMatrixPanel">Close</button>
+  <table>
+    <tr>
+      <td></td>
+      <td class="s1">S1</td>
+      <td class="s2">S2</td>
+      <td class="s3">S3</td>
+      <td class="s4">S4</td>
+      <td class="s5">S5</td>
+      <td class="s6">S6</td>
+      <td class="s7">S7</td>
+      <td class="s8">S8</td>
+      <td class="s9">S9</td>
+      <td class="s10">S10</td>
+      <td class="s11">S11</td>
+      <td class="s12">S12</td>
+      <td class="s13">S13</td>
+      <td class="s14">S14</td>
+      <td class="s15">S15</td>
+      <td class="s16">S16</td>
+    </tr>
+    <tr>
+      <td class="s1">S1</td>
+      <td><input type="text" class="form-control" id="1" ngModel required></td>
+      <td><input type="text" class="form-control" id="2" ngModel required></td>
+      <td><input type="text" class="form-control" id="3" ngModel></td>
+      <td><input type="text" class="form-control" id="4" ngModel></td>
+      <td><input type="text" class="form-control" id="5" ngModel></td>
+      <td><input type="text" class="form-control" id="6" ngModel></td>
+      <td><input type="text" class="form-control" id="7" ngModel></td>
+      <td><input type="text" class="form-control" id="8" ngModel></td>
+      <td><input type="text" class="form-control" id="9" ngModel></td>
+      <td><input type="text" class="form-control" id="10" ngModel></td>
+      <td><input type="text" class="form-control" id="11" ngModel></td>
+      <td><input type="text" class="form-control" id="12" ngModel></td>
+      <td><input type="text" class="form-control" id="13" ngModel></td>
+      <td><input type="text" class="form-control" id="14" ngModel></td>
+      <td><input type="text" class="form-control" id="15" ngModel></td>
+      <td><input type="text" class="form-control" id="16" ngModel></td>
+    </tr>
+    <tr>
+      <td class="s2">S2</td>
+      <td><input type="text" class="form-control" id="17" ngModel required></td>
+      <td><input type="text" class="form-control" id="18" ngModel required></td>
+      <td><input type="text" class="form-control" id="19" ngModel></td>
+      <td><input type="text" class="form-control" id="20" ngModel></td>
+      <td><input type="text" class="form-control" id="21" ngModel></td>
+      <td><input type="text" class="form-control" id="22" ngModel></td>
+      <td><input type="text" class="form-control" id="23" ngModel></td>
+      <td><input type="text" class="form-control" id="24" ngModel></td>
+      <td><input type="text" class="form-control" id="25" ngModel></td>
+      <td><input type="text" class="form-control" id="26" ngModel></td>
+      <td><input type="text" class="form-control" id="27" ngModel></td>
+      <td><input type="text" class="form-control" id="28" ngModel></td>
+      <td><input type="text" class="form-control" id="29" ngModel></td>
+      <td><input type="text" class="form-control" id="30" ngModel></td>
+      <td><input type="text" class="form-control" id="31" ngModel></td>
+      <td><input type="text" class="form-control" id="32" ngModel></td>
+    </tr>
+    <tr>
+      <td class="s3">S3</td>
+      <td><input type="text" class="form-control" id="33" ngModel></td>
+      <td><input type="text" class="form-control" id="34" ngModel></td>
+      <td><input type="text" class="form-control" id="35" ngModel></td>
+      <td><input type="text" class="form-control" id="36" ngModel></td>
+      <td><input type="text" class="form-control" id="37" ngModel></td>
+      <td><input type="text" class="form-control" id="38" ngModel></td>
+      <td><input type="text" class="form-control" id="39" ngModel></td>
+      <td><input type="text" class="form-control" id="40" ngModel></td>
+      <td><input type="text" class="form-control" id="41" ngModel></td>
+      <td><input type="text" class="form-control" id="42" ngModel></td>
+      <td><input type="text" class="form-control" id="43" ngModel></td>
+      <td><input type="text" class="form-control" id="44" ngModel></td>
+      <td><input type="text" class="form-control" id="45" ngModel></td>
+      <td><input type="text" class="form-control" id="46" ngModel></td>
+      <td><input type="text" class="form-control" id="47" ngModel></td>
+      <td><input type="text" class="form-control" id="48" ngModel></td>
+    </tr>
+    <tr>
+      <td class="s4">S4</td>
+      <td><input type="text" class="form-control" id="49" ngModel></td>
+      <td><input type="text" class="form-control" id="50" ngModel></td>
+      <td><input type="text" class="form-control" id="51" ngModel></td>
+      <td><input type="text" class="form-control" id="52" ngModel></td>
+      <td><input type="text" class="form-control" id="53" ngModel></td>
+      <td><input type="text" class="form-control" id="54" ngModel></td>
+      <td><input type="text" class="form-control" id="55" ngModel></td>
+      <td><input type="text" class="form-control" id="56" ngModel></td>
+      <td><input type="text" class="form-control" id="57" ngModel></td>
+      <td><input type="text" class="form-control" id="58" ngModel></td>
+      <td><input type="text" class="form-control" id="59" ngModel></td>
+      <td><input type="text" class="form-control" id="60" ngModel></td>
+      <td><input type="text" class="form-control" id="61" ngModel></td>
+      <td><input type="text" class="form-control" id="62" ngModel></td>
+      <td><input type="text" class="form-control" id="63" ngModel></td>
+      <td><input type="text" class="form-control" id="64" ngModel></td>
+    </tr>
+    <tr>
+    <td class="s5">S5</td>
+      <td><input type="text" class="form-control" id="65" ngModel></td>
+      <td><input type="text" class="form-control" id="66" ngModel></td>
+      <td><input type="text" class="form-control" id="67" ngModel></td>
+      <td><input type="text" class="form-control" id="68" ngModel></td>
+      <td><input type="text" class="form-control" id="69" ngModel></td>
+      <td><input type="text" class="form-control" id="70" ngModel></td>
+      <td><input type="text" class="form-control" id="71" ngModel></td>
+      <td><input type="text" class="form-control" id="72" ngModel></td>
+      <td><input type="text" class="form-control" id="73" ngModel></td>
+      <td><input type="text" class="form-control" id="74" ngModel></td>
+      <td><input type="text" class="form-control" id="75" ngModel></td>
+      <td><input type="text" class="form-control" id="76" ngModel></td>
+      <td><input type="text" class="form-control" id="77" ngModel></td>
+      <td><input type="text" class="form-control" id="78" ngModel></td>
+      <td><input type="text" class="form-control" id="79" ngModel></td>
+      <td><input type="text" class="form-control" id="80" ngModel></td>
+    </tr>
+    <tr>
+      <td class="s6">S6</td>
+      <td><input type="text" class="form-control" id="81" ngModel></td>
+      <td><input type="text" class="form-control" id="82" ngModel></td>
+      <td><input type="text" class="form-control" id="83" ngModel></td>
+      <td><input type="text" class="form-control" id="84" ngModel></td>
+      <td><input type="text" class="form-control" id="85" ngModel></td>
+      <td><input type="text" class="form-control" id="86" ngModel></td>
+      <td><input type="text" class="form-control" id="87" ngModel></td>
+      <td><input type="text" class="form-control" id="88" ngModel></td>
+      <td><input type="text" class="form-control" id="89" ngModel></td>
+      <td><input type="text" class="form-control" id="90" ngModel></td>
+      <td><input type="text" class="form-control" id="91" ngModel></td>
+      <td><input type="text" class="form-control" id="92" ngModel></td>
+      <td><input type="text" class="form-control" id="93" ngModel></td>
+      <td><input type="text" class="form-control" id="94" ngModel></td>
+      <td><input type="text" class="form-control" id="95" ngModel></td>
+      <td><input type="text" class="form-control" id="96" ngModel></td>
+    </tr>
+    <tr>
+      <td class="s7">S7</td>
+      <td><input type="text" class="form-control" id="97" ngModel></td>
+      <td><input type="text" class="form-control" id="98" ngModel></td>
+      <td><input type="text" class="form-control" id="99" ngModel></td>
+      <td><input type="text" class="form-control" id="100" ngModel></td>
+      <td><input type="text" class="form-control" id="101" ngModel></td>
+      <td><input type="text" class="form-control" id="102" ngModel></td>
+      <td><input type="text" class="form-control" id="103" ngModel></td>
+      <td><input type="text" class="form-control" id="104" ngModel></td>
+      <td><input type="text" class="form-control" id="105" ngModel></td>
+      <td><input type="text" class="form-control" id="106" ngModel></td>
+      <td><input type="text" class="form-control" id="107" ngModel></td>
+      <td><input type="text" class="form-control" id="108" ngModel></td>
+      <td><input type="text" class="form-control" id="109" ngModel></td>
+      <td><input type="text" class="form-control" id="110" ngModel></td>
+      <td><input type="text" class="form-control" id="111" ngModel></td>
+      <td><input type="text" class="form-control" id="112" ngModel></td>
+    </tr>
+    <tr>
+      <td class="s8">S8</td>
+      <td><input type="text" class="form-control" id="113" ngModel></td>
+      <td><input type="text" class="form-control" id="114" ngModel></td>
+      <td><input type="text" class="form-control" id="115" ngModel></td>
+      <td><input type="text" class="form-control" id="116" ngModel></td>
+      <td><input type="text" class="form-control" id="117" ngModel></td>
+      <td><input type="text" class="form-control" id="118" ngModel></td>
+      <td><input type="text" class="form-control" id="119" ngModel></td>
+      <td><input type="text" class="form-control" id="120" ngModel></td>
+      <td><input type="text" class="form-control" id="121" ngModel></td>
+      <td><input type="text" class="form-control" id="122" ngModel></td>
+      <td><input type="text" class="form-control" id="123" ngModel></td>
+      <td><input type="text" class="form-control" id="124" ngModel></td>
+      <td><input type="text" class="form-control" id="125" ngModel></td>
+      <td><input type="text" class="form-control" id="126" ngModel></td>
+      <td><input type="text" class="form-control" id="127" ngModel></td>
+      <td><input type="text" class="form-control" id="128" ngModel></td>
+    </tr>
+    <tr>
+      <td class="s9">S9</td>
+      <td><input type="text" class="form-control" id="129" ngModel></td>
+      <td><input type="text" class="form-control" id="130" ngModel></td>
+      <td><input type="text" class="form-control" id="131" ngModel></td>
+      <td><input type="text" class="form-control" id="132" ngModel></td>
+      <td><input type="text" class="form-control" id="133" ngModel></td>
+      <td><input type="text" class="form-control" id="134" ngModel></td>
+      <td><input type="text" class="form-control" id="135" ngModel></td>
+      <td><input type="text" class="form-control" id="136" ngModel></td>
+      <td><input type="text" class="form-control" id="137" ngModel></td>
+      <td><input type="text" class="form-control" id="138" ngModel></td>
+      <td><input type="text" class="form-control" id="139" ngModel></td>
+      <td><input type="text" class="form-control" id="140" ngModel></td>
+      <td><input type="text" class="form-control" id="141" ngModel></td>
+      <td><input type="text" class="form-control" id="142" ngModel></td>
+      <td><input type="text" class="form-control" id="143" ngModel></td>
+      <td><input type="text" class="form-control" id="144" ngModel></td>
+    </tr>
+    <tr>
+      <td class="s10">S10</td>
+      <td><input type="text" class="form-control" id="145" ngModel></td>
+      <td><input type="text" class="form-control" id="146" ngModel></td>
+      <td><input type="text" class="form-control" id="147" ngModel></td>
+      <td><input type="text" class="form-control" id="148" ngModel></td>
+      <td><input type="text" class="form-control" id="149" ngModel></td>
+      <td><input type="text" class="form-control" id="150" ngModel></td>
+      <td><input type="text" class="form-control" id="151" ngModel></td>
+      <td><input type="text" class="form-control" id="152" ngModel></td>
+      <td><input type="text" class="form-control" id="153" ngModel></td>
+      <td><input type="text" class="form-control" id="154" ngModel></td>
+      <td><input type="text" class="form-control" id="155" ngModel></td>
+      <td><input type="text" class="form-control" id="156" ngModel></td>
+      <td><input type="text" class="form-control" id="157" ngModel></td>
+      <td><input type="text" class="form-control" id="158" ngModel></td>
+      <td><input type="text" class="form-control" id="159" ngModel></td>
+      <td><input type="text" class="form-control" id="160" ngModel></td>
+    </tr>
+    <tr>
+      <td class="s11">S11</td>
+      <td><input type="text" class="form-control" id="161" ngModel></td>
+      <td><input type="text" class="form-control" id="162" ngModel></td>
+      <td><input type="text" class="form-control" id="163" ngModel></td>
+      <td><input type="text" class="form-control" id="164" ngModel></td>
+      <td><input type="text" class="form-control" id="165" ngModel></td>
+      <td><input type="text" class="form-control" id="166" ngModel></td>
+      <td><input type="text" class="form-control" id="167" ngModel></td>
+      <td><input type="text" class="form-control" id="168" ngModel></td>
+      <td><input type="text" class="form-control" id="169" ngModel></td>
+      <td><input type="text" class="form-control" id="170" ngModel></td>
+      <td><input type="text" class="form-control" id="171" ngModel></td>
+      <td><input type="text" class="form-control" id="172" ngModel></td>
+      <td><input type="text" class="form-control" id="173" ngModel></td>
+      <td><input type="text" class="form-control" id="174" ngModel></td>
+      <td><input type="text" class="form-control" id="175" ngModel></td>
+      <td><input type="text" class="form-control" id="176" ngModel></td>
+    </tr>
+    <tr>
+      <td class="s12">S12</td>
+      <td><input type="text" class="form-control" id="177" ngModel></td>
+      <td><input type="text" class="form-control" id="178" ngModel></td>
+      <td><input type="text" class="form-control" id="179" ngModel></td>
+      <td><input type="text" class="form-control" id="180" ngModel></td>
+      <td><input type="text" class="form-control" id="181" ngModel></td>
+      <td><input type="text" class="form-control" id="182" ngModel></td>
+      <td><input type="text" class="form-control" id="183" ngModel></td>
+      <td><input type="text" class="form-control" id="184" ngModel></td>
+      <td><input type="text" class="form-control" id="185" ngModel></td>
+      <td><input type="text" class="form-control" id="186" ngModel></td>
+      <td><input type="text" class="form-control" id="187" ngModel></td>
+      <td><input type="text" class="form-control" id="188" ngModel></td>
+      <td><input type="text" class="form-control" id="189" ngModel></td>
+      <td><input type="text" class="form-control" id="190" ngModel></td>
+      <td><input type="text" class="form-control" id="191" ngModel></td>
+      <td><input type="text" class="form-control" id="192" ngModel></td>
+    </tr>
+    <tr>
+      <td class="s13">S13</td>
+      <td><input type="text" class="form-control" id="193" ngModel></td>
+      <td><input type="text" class="form-control" id="194" ngModel></td>
+      <td><input type="text" class="form-control" id="195" ngModel></td>
+      <td><input type="text" class="form-control" id="196" ngModel></td>
+      <td><input type="text" class="form-control" id="197" ngModel></td>
+      <td><input type="text" class="form-control" id="198" ngModel></td>
+      <td><input type="text" class="form-control" id="199" ngModel></td>
+      <td><input type="text" class="form-control" id="200" ngModel></td>
+      <td><input type="text" class="form-control" id="201" ngModel></td>
+      <td><input type="text" class="form-control" id="202" ngModel></td>
+      <td><input type="text" class="form-control" id="203" ngModel></td>
+      <td><input type="text" class="form-control" id="204" ngModel></td>
+      <td><input type="text" class="form-control" id="205" ngModel></td>
+      <td><input type="text" class="form-control" id="206" ngModel></td>
+      <td><input type="text" class="form-control" id="207" ngModel></td>
+      <td><input type="text" class="form-control" id="208" ngModel></td>
+    </tr>
+    <tr>
+      <td class="s14">S14</td>
+      <td><input type="text" class="form-control" id="209" ngModel></td>
+      <td><input type="text" class="form-control" id="210" ngModel></td>
+      <td><input type="text" class="form-control" id="211" ngModel></td>
+      <td><input type="text" class="form-control" id="212" ngModel></td>
+      <td><input type="text" class="form-control" id="213" ngModel></td>
+      <td><input type="text" class="form-control" id="214" ngModel></td>
+      <td><input type="text" class="form-control" id="215" ngModel></td>
+      <td><input type="text" class="form-control" id="216" ngModel></td>
+      <td><input type="text" class="form-control" id="217" ngModel></td>
+      <td><input type="text" class="form-control" id="218" ngModel></td>
+      <td><input type="text" class="form-control" id="219" ngModel></td>
+      <td><input type="text" class="form-control" id="220" ngModel></td>
+      <td><input type="text" class="form-control" id="221" ngModel></td>
+      <td><input type="text" class="form-control" id="222" ngModel></td>
+      <td><input type="text" class="form-control" id="223" ngModel></td>
+      <td><input type="text" class="form-control" id="224" ngModel></td>
+    </tr>
+    <tr>
+      <td class="s15">S15</td>
+      <td><input type="text" class="form-control" id="225" ngModel></td>
+      <td><input type="text" class="form-control" id="226" ngModel></td>
+      <td><input type="text" class="form-control" id="227" ngModel></td>
+      <td><input type="text" class="form-control" id="228" ngModel></td>
+      <td><input type="text" class="form-control" id="229" ngModel></td>
+      <td><input type="text" class="form-control" id="230" ngModel></td>
+      <td><input type="text" class="form-control" id="231" ngModel></td>
+      <td><input type="text" class="form-control" id="232" ngModel></td>
+      <td><input type="text" class="form-control" id="233" ngModel></td>
+      <td><input type="text" class="form-control" id="234" ngModel></td>
+      <td><input type="text" class="form-control" id="235" ngModel></td>
+      <td><input type="text" class="form-control" id="236" ngModel></td>
+      <td><input type="text" class="form-control" id="237" ngModel></td>
+      <td><input type="text" class="form-control" id="238" ngModel></td>
+      <td><input type="text" class="form-control" id="239" ngModel></td>
+      <td><input type="text" class="form-control" id="240" ngModel></td>
+    </tr>
+    <tr>
+      <td class="s16">S16</td>
+      <td><input type="text" class="form-control" id="241" ngModel></td>
+      <td><input type="text" class="form-control" id="242" ngModel></td>
+      <td><input type="text" class="form-control" id="243" ngModel></td>
+      <td><input type="text" class="form-control" id="244" ngModel></td>
+      <td><input type="text" class="form-control" id="245" ngModel></td>
+      <td><input type="text" class="form-control" id="246" ngModel></td>
+      <td><input type="text" class="form-control" id="247" ngModel></td>
+      <td><input type="text" class="form-control" id="248" ngModel></td>
+      <td><input type="text" class="form-control" id="249" ngModel></td>
+      <td><input type="text" class="form-control" id="250" ngModel></td>
+      <td><input type="text" class="form-control" id="251" ngModel></td>
+      <td><input type="text" class="form-control" id="252" ngModel></td>
+      <td><input type="text" class="form-control" id="253" ngModel></td>
+      <td><input type="text" class="form-control" id="254" ngModel></td>
+      <td><input type="text" class="form-control" id="255" ngModel></td>
+      <td><input type="text" class="form-control" id="256" ngModel></td>
+    </tr>
+  </table>
+</div>
+
+<div class="percentagesPanel" [hidden]="!showMatrixPanel">
+  <p class="lead text-center">Strategy Percentages <br>
+  <i style="font-size: 50%;">Leave <b>all</b> blank for equal gen</i></p>
+  <table>
+    <tr>
+      <td class="s1">S1</td>
+      <td><input type="text" class="form-control" id="prob1"></td>
+    </tr>
+    <tr>
+      <td class="s2">S2</td>
+      <td><input type="text" class="form-control" id="prob2"></td>
+    </tr>
+    <tr>
+      <td class="s3">S2</td>
+      <td><input type="text" class="form-control" id="prob3"></td>
+    </tr>
+    <tr>
+      <td class="s4">S2</td>
+      <td><input type="text" class="form-control" id="prob4"></td>
+    </tr>
+    <tr>
+      <td class="s5">S2</td>
+      <td><input type="text" class="form-control" id="prob5"></td>
+    </tr>
+    <tr>
+      <td class="s6">S2</td>
+      <td><input type="text" class="form-control" id="prob6"></td>
+    </tr>
+    <tr>
+      <td class="s7">S7</td>
+      <td><input type="text" class="form-control" id="prob7"></td>
+    </tr>
+    <tr>
+      <td class="s8">S8</td>
+      <td><input type="text" class="form-control" id="prob8"></td>
+    </tr>
+    <tr>
+      <td class="s9">S9</td>
+      <td><input type="text" class="form-control" id="prob9"></td>
+    </tr>
+    <tr>
+      <td class="s10">S10</td>
+      <td><input type="text" class="form-control" id="prob10"></td>
+    </tr>
+    <tr>
+      <td class="s11">S11</td>
+      <td><input type="text" class="form-control" id="prob11"></td>
+    </tr>
+    <tr>
+      <td class="s12">S12</td>
+      <td><input type="text" class="form-control" id="prob12"></td>
+    </tr>
+    <tr>
+      <td class="s13">S13</td>
+      <td><input type="text" class="form-control" id="prob13"></td>
+    </tr>
+    <tr>
+      <td class="s14">S14</td>
+      <td><input type="text" class="form-control" id="prob14"></td>
+    </tr>
+    <tr>
+      <td class="s15">S15</td>
+      <td><input type="text" class="form-control" id="prob15"></td>
+    </tr>
+    <tr>
+      <td class="s16">S16</td>
+      <td><input type="text" class="form-control" id="prob16"></td>
+    </tr>
+  </table>
 </div>
